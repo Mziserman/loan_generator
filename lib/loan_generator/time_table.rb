@@ -33,5 +33,20 @@ module LoanGenerator
       @remaining_interests = remaining_interests
       @capitalized_interests = capitalized_interests
     end
+
+    def == other
+      return false unless other.is_a? TimeTable
+      return false unless other.term == term
+      return false unless other.total == total
+      return false unless other.capital_part == capital_part
+      return false unless other.interests_part == interests_part
+      return false unless other.paid_capital == paid_capital
+      return false unless other.remaining_capital == remaining_capital
+      return false unless other.paid_interests == paid_interests
+      return false unless other.remaining_interests == remaining_interests
+      return false unless other.capitalized_interests == capitalized_interests
+
+      true
+    end
   end
 end
