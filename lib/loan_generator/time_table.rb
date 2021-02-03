@@ -36,6 +36,7 @@ module LoanGenerator
 
     def == other
       return false unless other.is_a? TimeTable
+
       return false unless other.term == term
       return false unless other.total == total
       return false unless other.capital_part == capital_part

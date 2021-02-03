@@ -28,46 +28,36 @@ RSpec.describe LoanGenerator::Services::Restructurations::Create do
 
   let(:last_committed_term) { 6 }
 
-  it 'succeeds' do
-    expect(subject.success?).to be true
-  end
+  context 'without changing anything' do
+    it 'succeeds' do
+      expect(subject.success?).to be true
+    end
 
-  it 'generates the right number of time ables' do
-    expect(subject.value!.time_tables.length).to eq(loan.duration - last_committed_term)
-  end
+    it 'generates the right number of time ables' do
+      expect(subject.value!.time_tables.length).to eq(loan.duration - last_committed_term)
+    end
 
-  it 'does not change input loan' do
-    time_tables = loan.time_tables
-    subject
+    it 'does not change input loan' do
+      time_tables = loan.time_tables
+      subject
 
-    time_tables.each_with_index do |time_table, index|
-      expect(loan.time_tables[index]).to be == time_table
+      time_tables.each_with_index do |time_table, index|
+        expect(loan.time_tables[index]).to be == time_table
+      end
+    end
+
+    it 'has right time tables' do
+      subject.value!.time_tables.each_with_index do |time_table, index|
+        base = loan.time_tables[index + last_committed_term]
+        expect(base.total).to be_within(0.004).of(time_table.total)
+        expect(base.capital_part).to be_within(0.004).of(time_table.capital_part)
+        expect(base.interests_part).to be_within(0.004).of(time_table.interests_part)
+        expect(base.paid_capital).to be_within(0.004).of(time_table.paid_capital)
+        expect(base.remaining_capital).to be_within(0.004).of(time_table.remaining_capital)
+        expect(base.paid_interests).to be_within(0.004).of(time_table.paid_interests)
+        expect(base.remaining_interests).to be_within(0.004).of(time_table.remaining_interests)
+        expect(base.capitalized_interests).to be_within(0.004).of(time_table.capitalized_interests)
+      end
     end
   end
-
-  it 'has right time tables' do
-    subject.value!.time_tables.each_with_index do |time_table, index|
-      base = loan.time_tables[index + last_committed_term]
-      expect(base.total).to be_within(0.004).of(time_table.total)
-      expect(base.capital_part).to be_within(0.004).of(time_table.capital_part)
-      expect(base.interests_part).to be_within(0.004).of(time_table.interests_part)
-      expect(base.paid_capital).to be_within(0.004).of(time_table.paid_capital)
-      expect(base.remaining_capital).to be_within(0.004).of(time_table.remaining_capital)
-      expect(base.paid_interests).to be_within(0.004).of(time_table.paid_interests)
-      expect(base.remaining_interests).to be_within(0.004).of(time_table.remaining_interests)
-      expect(base.capitalized_interests).to be_within(0.004).of(time_table.capitalized_interests)
-    end
-  end
-
-  # it 'has right paid_capital' do
-  #   expect(subject.value![:paid_capital]).to eq(loan.time_tables[last_committed_term - 1].paid_capital)
-  # end
-
-  # it 'has right paid_interests' do
-  #   expect(subject.value![:paid_interests]).to eq(loan.time_tables[last_committed_term - 1].paid_interests)
-  # end
-
-  # it 'has right capitalized_interests' do
-  #   expect(subject.value![:capitalized_interests]).to eq(loan.time_tables[last_committed_term - 1].capitalized_interests)
-  # end
 end
