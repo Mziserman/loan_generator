@@ -41,10 +41,38 @@ module LoanGenerator
       capital - paid_capital(term: term)
     end
 
+    def remaining_capital_end_of_term term: 1
+      capital - paid_capital(term: term + 1)
+    end
+
     def paid_capital term: 1
       return 0 if term == 1
 
       paid_capital(term: term - 1) + capital_part(term: term - 1)
+    end
+
+    def paid_capital_end_of_term term: 1
+      paid_capital(term: term + 1)
+    end
+
+    def paid_interests term: 1
+      return 0 if term == 1
+
+      paid_interests(term: term - 1) + interests_part(term: term - 1)
+    end
+
+    def remaining_interests term: 1
+      return total_interest if term == 1
+
+      total_interest - paid_interests(term: term)
+    end
+
+    def paid_interests_end_of_term term: 1
+      paid_interests(term: term + 1)
+    end
+
+    def remaining_interests_end_of_term term: 1
+      remaining_interests(term: term + 1)
     end
   end
 end

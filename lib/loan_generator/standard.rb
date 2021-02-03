@@ -38,15 +38,15 @@ module LoanGenerator
     end
 
     def paid_capital term: 1
-      time_tables[1..term].map(&:capital_part).sum
+      time_tables[0...term].map(&:capital_part).sum
     end
 
     def paid_interests term: 1
-      time_tables[1..term].map(&:interests_part).sum
+      time_tables[0...term].map(&:interests_part).sum
     end
 
     def paid term: 1
-      time_tables[1..term].map(&:total).sum
+      time_tables[0...term].map(&:total).sum
     end
 
     private
@@ -58,7 +58,10 @@ module LoanGenerator
           total: @calculator.total(term: term),
           capital_part: @calculator.capital_part(term: term),
           interests_part: @calculator.interests_part(term: term),
-          remaining_capital: @calculator.remaining_capital(term: term),
+          paid_capital: @calculator.paid_capital_end_of_term(term: term),
+          remaining_capital: @calculator.remaining_capital_end_of_term(term: term),
+          paid_interests: @calculator.paid_interests_end_of_term(term: term),
+          remaining_interests: @calculator.remaining_interests_end_of_term(term: term),
           capitalized_interests: @calculator.capitalized_interests(term: term)
         )
       end

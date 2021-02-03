@@ -17,8 +17,23 @@ module LoanGenerator
         type: 'float'
       },
       {
+        key: 'paid_capital',
+        title: 'paid_capital',
+        type: 'float'
+      },
+      {
         key: 'remaining_capital',
         title: 'remaining_capital',
+        type: 'float'
+      },
+      {
+        key: 'paid_interests',
+        title: 'paid_interests',
+        type: 'float'
+      },
+      {
+        key: 'remaining_interests',
+        title: 'remaining_interests',
         type: 'float'
       },
       {
