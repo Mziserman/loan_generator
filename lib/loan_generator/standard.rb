@@ -13,7 +13,16 @@ module LoanGenerator
                   :deferred,
                   :time_tables
 
-    def initialize capital: 1000000, duration: 12, rate: 0.12, months_per_term: 1, deferred: 0
+    def initialize(
+      capital: 1000000,
+      duration: 12,
+      rate: 0.12,
+      months_per_term: 1,
+      deferred: 0,
+      paid_capital: 0,
+      paid_interests: 0,
+      capitalized_interests: 0
+    )
       @capital = capital.to_f
       @duration = duration
       @rate = rate
@@ -24,7 +33,10 @@ module LoanGenerator
         duration: duration,
         rate: rate,
         months_per_term: months_per_term,
-        deferred: deferred
+        deferred: deferred,
+        base_paid_capital: paid_capital,
+        base_paid_interests: paid_interests,
+        base_capitalized_interests: capitalized_interests
       )
 
       @time_tables = generate_time_tables
