@@ -11,4 +11,5 @@ require "loan_generator"
 # Pry.start
 
 require "irb"
+LS = LoanGenerator::Standard
 IRB.start(__FILE__)
