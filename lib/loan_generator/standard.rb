@@ -1,6 +1,7 @@
 module LoanGenerator
   class Standard
     include Formulas
+    include PrintableLoan
 
     attr_accessor :capital,
                   :duration,
@@ -28,13 +29,24 @@ module LoanGenerator
       @time_tables = generate_time_tables
     end
 
-
     def rate_per_term
       @calculator.rate_per_term
     end
 
     def payment_per_term
       @calculator.payment_per_term
+    end
+
+    def paid_capital term: 1
+      time_tables[1..term].map(&:capital_part).sum
+    end
+
+    def paid_interests term: 1
+      time_tables[1..term].map(&:interests_part).sum
+    end
+
+    def paid term: 1
+      time_tables[1..term].map(&:total).sum
     end
 
     private
@@ -45,7 +57,9 @@ module LoanGenerator
           term: term,
           total: @calculator.total(term: term),
           capital_part: @calculator.capital_part(term: term),
-          interests_part: @calculator.interests_part(term: term)
+          interests_part: @calculator.interests_part(term: term),
+          remaining_capital: @calculator.remaining_capital(term: term),
+          capitalized_interests: @calculator.capitalized_interests(term: term)
         )
       end
     end
