@@ -2,7 +2,7 @@ module LoanGenerator
   module Formulas
     def payment_per_term
       (
-        capital * rate_per_term * (1 + rate_per_term)**(duration - deferred)
+        (base_capitalized_interests + capital - base_paid_capital) * rate_per_term * (1 + rate_per_term)**(duration - deferred)
       ) / (
         (1 + rate_per_term)**(duration - deferred) - 1
       )
@@ -13,7 +13,7 @@ module LoanGenerator
     end
 
     def total_interest
-      payment_per_term * duration - capital
+      base_paid_interests + payment_per_term * duration - (capital - base_paid_capital)
     end
 
     def capitalized_interests(term: 1)

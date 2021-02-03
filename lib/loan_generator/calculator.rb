@@ -6,14 +6,29 @@ module LoanGenerator
                   :duration,
                   :rate,
                   :months_per_term,
-                  :deferred
+                  :deferred,
+                  :base_paid_capital,
+                  :base_paid_interests,
+                  :base_capitalized_interests
 
-    def initialize capital: 1000000, duration: 12, rate: 0.12, months_per_term: 1, deferred: 0
+    def initialize(
+      capital: 1000000,
+      duration: 12,
+      rate: 0.12,
+      months_per_term: 1,
+      deferred: 0,
+      base_paid_capital: 0,
+      base_paid_interests: 0,
+      base_capitalized_interests: 0
+    )
       @capital = capital.to_f
       @duration = duration
       @rate = rate
       @months_per_term = months_per_term
       @deferred = deferred
+      @base_paid_capital = base_paid_capital
+      @base_paid_interests = base_paid_interests
+      @base_capitalized_interests = base_capitalized_interests
     end
 
     def total(term: 1)
@@ -38,7 +53,7 @@ module LoanGenerator
     end
 
     def remaining_capital term: 1
-      capital - paid_capital(term: term)
+      base_capitalized_interests + capital - paid_capital(term: term)
     end
 
     def remaining_capital_end_of_term term: 1
@@ -46,7 +61,7 @@ module LoanGenerator
     end
 
     def paid_capital term: 1
-      return 0 if term == 1
+      return base_paid_capital if term == 1
 
       paid_capital(term: term - 1) + capital_part(term: term - 1)
     end
@@ -56,14 +71,12 @@ module LoanGenerator
     end
 
     def paid_interests term: 1
-      return 0 if term == 1
+      return base_paid_interests if term == 1
 
       paid_interests(term: term - 1) + interests_part(term: term - 1)
     end
 
     def remaining_interests term: 1
-      return total_interest if term == 1
-
       total_interest - paid_interests(term: term)
     end
 
