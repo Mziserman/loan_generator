@@ -13,7 +13,7 @@ module LoanGenerator
     end
 
     def total_interest
-      capital - payment_per_term * duration
+      payment_per_term * duration - capital
     end
 
     def capitalized_interests(term: 1)
