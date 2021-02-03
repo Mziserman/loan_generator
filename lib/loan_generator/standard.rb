@@ -2,6 +2,7 @@ module LoanGenerator
   class Standard
     include Formulas
     include PrintableLoan
+    include Trackable
 
     attr_accessor :capital,
                   :duration,
